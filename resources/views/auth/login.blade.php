@@ -1,25 +1,21 @@
-<x-layout>
-    <div class="card bg-base-100 border border-base-300 max-w-lg mx-auto">
-        <form method="POST" action="{{ route('login.store') }}" class="card-body gap-4">
+<x-layout title="Login">
+    <div class="panel max-w-lg mx-auto p-8">
+        <h1 class="glow-text text-2xl font-bold text-center mb-6">Anmelden</h1>
+
+        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-4">
             @csrf
-            <h2 class="card-title">Anmelden</h2>
 
-            <label class="form-control w-full">
-                <span class="label-text mb-1">E-Mail:</span>
-                <input type="email" name="email" value="{{ old('email') }}" required autofocus
-                       class="input input-bordered w-full @error('email') input-error @enderror">
-            </label>
-
-            <label class="form-control w-full">
-                <span class="label-text mb-1">Passwort:</span>
-                <input type="password" name="password" required
-                       class="input input-bordered w-full @error('password') input-error @enderror">
-            </label>
-
-            <div class="card-actions justify-center">
-                <button type="submit" class="btn btn-primary">Anmelden</button>
+            <div class="flex flex-col gap-1">
+                <label for="email" class="text-sm opacity-80">E-Mail:</label>
+                <input id="email" type="email" name="email" class="input input-bordered w-full">
             </div>
+
+            <div class="flex flex-col gap-1">
+                <label for="password" class="text-sm opacity-80">Passwort:</label>
+                <input id="password" type="password" name="password" class="input input-bordered w-full">
+            </div>
+
+            <button type="submit" class="btn btn-primary mx-auto mt-2">Anmelden</button>
         </form>
     </div>
-    <p class="text-center text-sm text-base-content/60 mt-3">Nach der Anmeldung folgt die Weiterleitung auf das Dashboard.</p
 </x-layout>

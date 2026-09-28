@@ -1,45 +1,39 @@
-<x-layout>
-    <form method="POST" action="{{ route('workshops.store') }}">
-        @csrf
+<x-layout title="Neuen Workshop erstellen">
+    <div class="panel max-w-2xl mx-auto p-8">
+        <h1 class="glow-text text-2xl font-bold mb-6">Neuen Workshop erstellen</h1>
 
-        <div>
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="{{ old('name') }}">
-            @error('name')
-            <span class="error">{{ $message }}</span>
-            @enderror
-        </div>
+        <form method="POST" action="{{ route('workshops.store') }}" enctype="multipart/form-data" class="flex flex-col gap-4">
+            @csrf
 
-        <div>
-            <label for="description">Beschreibung</label>
-            <textarea name="description" id="description">{{ old('description') }}</textarea>
-            @error('description')
-            <span class="error">{{ $message }}</span>
-            @enderror
-        </div>
+            <div class="flex flex-col gap-1">
+                <label for="title" class="text-sm opacity-80">Kursname:</label>
+                <input id="title" type="text" name="title" class="input input-bordered w-full">
+            </div>
 
-        <div>
-            <label for="date">Datum</label>
-            <input type="date" name="date" id="date" value="{{ old('date') }}">
-            @error('date')
-            <span class="error">{{ $message }}</span>
-            @enderror
-        </div>
+            <div class="flex flex-col gap-1">
+                <label for="description" class="text-sm opacity-80">Beschreibung:</label>
+                <textarea id="description" name="description" rows="4" class="textarea textarea-bordered w-full"></textarea>
+            </div>
 
-        <div>
-            <label for="organizer_id">Organizer</label>
-            <select name="organizer_id" id="organizer_id">
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ old('organizer_id') == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }}
-                    </option>
-                @endforeach
-            </select>
-            @error('organizer_id')
-            <span class="error">{{ $message }}</span>
-            @enderror
-        </div>
+            <div class="flex flex-col gap-1">
+                <label for="date" class="text-sm opacity-80">Datum:</label>
+                <input id="date" type="date" name="date" class="input input-bordered w-full">
+            </div>
 
-        <button type="submit">Erstellen</button>
-    </form>
+            <div class="flex flex-col gap-1">
+                <label for="leader" class="text-sm opacity-80">Programmführer:</label>
+                <input id="leader" type="text" name="leader" class="input input-bordered w-full">
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label for="image" class="text-sm opacity-80">Bild:</label>
+                <input id="image" type="file" name="image" class="file-input file-input-bordered w-full">
+            </div>
+
+            <div class="flex justify-between mt-4">
+                <button type="submit" class="btn btn-primary">Erstellen</button>
+                <a href="{{ route('dashboard') }}" class="btn btn-ghost">Abbrechen</a>
+            </div>
+        </form>
+    </div>
 </x-layout>
