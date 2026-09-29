@@ -6,6 +6,7 @@ use App\Http\Requests\Workshop\StoreWorkshopRequest;
 use App\Http\Requests\Workshop\UpdateWorkshopRequest;
 use App\Models\User;
 use App\Models\Workshop;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 
 class WorkshopController extends Controller
@@ -25,8 +26,8 @@ class WorkshopController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('workshops.create', compact('users'));
+        $organizer = User::where('role', 'organizer')->get();
+        return view('workshops.create', compact('organizer'));
     }
 
     /**
@@ -55,8 +56,8 @@ class WorkshopController extends Controller
      */
     public function edit(Workshop $workshop)
     {
-        $users = User::all();
-        return view('workshops.edit', compact('workshop', 'users'));
+        $organizer = User::where('role', 'organizer')->get();
+        return view('workshops.edit', compact('workshop', 'organizer'));
     }
 
     /**
@@ -64,6 +65,7 @@ class WorkshopController extends Controller
      */
     public function update(UpdateWorkshopRequest $request, Workshop $workshop)
     {
+        Gate::authorize('is-Organizer');
         $workshop->update($request->validated());
 
         return redirect()
@@ -74,8 +76,10 @@ class WorkshopController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Workshop $workshop)
     {
-        //
+        Gate::authorize('is-Organizer');
+        $workshop->delete();
+        return redirect()->route('dashboard')->with('success', 'Workshop deleted successfully.');
     }
 }

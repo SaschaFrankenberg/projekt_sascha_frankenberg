@@ -31,11 +31,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function organizedWorkshops()
-    {
-        return $this->hasMany(Workshop::class, 'organizer_id');
-    }
-
     public function workshops() {
         return $this->belongsToMany(Workshop::class);
     }

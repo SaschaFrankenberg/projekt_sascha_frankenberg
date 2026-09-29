@@ -1,21 +1,20 @@
 <x-layout title="Login">
-    <div class="panel max-w-lg mx-auto p-8">
-        <h1 class="glow-text text-2xl font-bold text-center mb-6">Anmelden</h1>
-
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-4">
+    <div class="card bg-base-100 border border-base-300 shadow-sm max-w-lg mx-auto">
+        <form method="POST" action="{{ route('login') }}" class="card-body gap-4">
             @csrf
+            <h1 class="card-title justify-center mb-2">Anmelden</h1>
 
-            <div class="flex flex-col gap-1">
-                <label for="email" class="text-sm opacity-80">E-Mail:</label>
-                <input id="email" type="email" name="email" class="input input-bordered w-full">
-            </div>
+            <label class="form-control">
+                <span class="label-text font-medium">E-Mail:</span>
+                <input type="email" name="email" class="input input-bordered w-full">
+            </label>
 
-            <div class="flex flex-col gap-1">
-                <label for="password" class="text-sm opacity-80">Passwort:</label>
-                <input id="password" type="password" name="password" class="input input-bordered w-full">
-            </div>
+            <label class="form-control">
+                <span class="label-text font-medium">Passwort:</span>
+                <input type="password" name="password" class="input input-bordered w-full">
+            </label>
 
-            <button type="submit" class="btn btn-primary mx-auto mt-2">Anmelden</button>
+            <button type="submit" class="btn btn-primary hover:brightness-110 mt-2">Anmelden</button>
         </form>
     </div>
 </x-layout>

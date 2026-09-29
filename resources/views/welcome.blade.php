@@ -1,11 +1,14 @@
 <x-layout title="Willkommen">
-    <section class="panel p-10 md:p-16 text-center">
-        <p class="text-sm tracking-widest uppercase opacity-70 mb-3">✦ Willkommen ✦</p>
-        <h1 class="glow-text text-4xl md:text-5xl font-bold mb-6">Vorstellung des Vereins</h1>
-        <p class="max-w-2xl mx-auto opacity-80 mb-8">
-            Hier steht der Text über den Verein: Wer wir sind, was wir machen
-            und wie man bei uns mitmachen kann.
-        </p>
-        <a href="{{ route('workshops.index') }}" class="btn btn-primary">Workshops entdecken</a>
+    <section class="card bg-base-100 border border-base-300 shadow-sm">
+        <div class="card-body items-center text-center py-16">
+            <h1 class="text-4xl font-bold mb-4">Vorstellung des Vereins</h1>
+            <p class="max-w-2xl text-base-content/80 mb-8">
+                Hier steht der Text über den Verein: Wer wir sind, was wir machen
+                und wie man bei uns mitmachen kann.
+            </p>
+            <a href="{{ route('workshops.index') }}" class="btn btn-primary hover:brightness-110">
+                Workshops entdecken
+            </a>
+        </div>
     </section>
 </x-layout>
