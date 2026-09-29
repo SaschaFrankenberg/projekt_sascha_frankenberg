@@ -26,7 +26,8 @@ class WorkshopController extends Controller
      */
     public function create()
     {
-        $organizer = User::where('role', 'organizer')->get();
+        Gate::authorize('is-Organizer');
+//        $organizer = User::where('role', 'organizer')->get();
         return view('workshops.create', compact('organizer'));
     }
 
@@ -48,7 +49,23 @@ class WorkshopController extends Controller
     public function show(Workshop $workshop)
     {
         $workshop->load(['organizer', 'users']);
-        return view('workshops.show', compact('workshop'));
+        $isRegistered = auth()->check() && $workshop->users()->where('user_id', auth()->id())->exists();
+
+        return view('workshops.show', compact('workshop', 'isRegistered'));
+    }
+
+    public function register(Workshop $workshop)
+    {
+        $workshop->users()->syncWithoutDetaching(auth()->id());
+
+        return redirect()->back()->with('success', 'Workshop registered successfully.');
+    }
+
+    public function unregister(Workshop $workshop)
+    {
+        $workshop->users()->detach(auth()->id());
+
+        return redirect()->back()->with('success', 'Workshop unregistered successfully.');
     }
 
     /**
@@ -56,8 +73,9 @@ class WorkshopController extends Controller
      */
     public function edit(Workshop $workshop)
     {
-        $organizer = User::where('role', 'organizer')->get();
-        return view('workshops.edit', compact('workshop', 'organizer'));
+//        Gate::authorize('is-Organizer');
+        $organizers = User::where('role', 'organizer')->get();
+        return view('workshops.edit', compact('workshop', 'organizers'));
     }
 
     /**
@@ -65,11 +83,11 @@ class WorkshopController extends Controller
      */
     public function update(UpdateWorkshopRequest $request, Workshop $workshop)
     {
-        Gate::authorize('is-Organizer');
+//        Gate::authorize('is-Organizer');
         $workshop->update($request->validated());
 
         return redirect()
-            ->route('workshops.show')
+            ->route('workshops.show', $workshop)
             ->with('success', 'Workshop updated successfully.');
     }
 
@@ -78,7 +96,7 @@ class WorkshopController extends Controller
      */
     public function destroy(Workshop $workshop)
     {
-        Gate::authorize('is-Organizer');
+//        Gate::authorize('is-Organizer');
         $workshop->delete();
         return redirect()->route('dashboard')->with('success', 'Workshop deleted successfully.');
     }

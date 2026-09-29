@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Workshop::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->unique(['user_id', 'workshop_id']); // verhindert, dass sich Mitglieder doppelt anmelden
         });
     }
 

@@ -12,8 +12,6 @@
             <h1 class="text-3xl font-bold mb-6">{{ $workshop->name }}</h1>
 
             <dl class="grid grid-cols-3 gap-y-4 gap-x-4">
-                <dt class="font-medium text-base-content/70">Kursname:</dt>
-                <dd class="col-span-2">{{ $workshop->name }}</dd>
 
                 <dt class="font-medium text-base-content/70">Beschreibung:</dt>
                 <dd class="col-span-2">{{ $workshop->description }}</dd>
@@ -25,14 +23,30 @@
                 <dd class="col-span-2">{{ $workshop->organizer->name}}</dd>
             </dl>
 
-{{--            <form method="POST" action="{{ route('workshops.unregister', $workshop->id) }}" class="flex justify-end mt-8">--}}
-{{--                @csrf--}}
-{{--                @method('DELETE')--}}
-{{--                <button type="submit" class="btn btn-outline btn-warning btn-sm hover:bg-warning hover:text-warning-content">--}}
-{{--                    Kurs abmelden--}}
-{{--                </button>--}}
-{{--            </form>--}}
-
+            <div class="flex justify-end mt-8">
+                @auth
+                    @if ($isRegistered)
+                        <form method="POST" action="{{ route('workshops.unregister', $workshop->id) }}">
+                            @csrf
+                            <button type="submit"
+                                    class="btn btn-outline btn-warning btn-sm hover:bg-warning hover:text-warning-content">
+                                Kurs abmelden
+                            </button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('workshops.register', $workshop->id) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-sm hover:brightness-110">
+                                Kurs anmelden
+                            </button>
+                        </form>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-outline btn-sm hover:bg-base-200">
+                        Zum Anmelden bitte einloggen
+                    </a>
+                @endauth
+            </div>
         </div>
     </div>
 </x-layout>

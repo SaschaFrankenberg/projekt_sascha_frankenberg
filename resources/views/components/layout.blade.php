@@ -16,7 +16,7 @@
 </a>
 
 <header class="max-w-5xl w-full mx-auto px-4 mt-4">
-    <x-navigation />
+    <x-navigation/>
 </header>
 
 <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8">
