@@ -3,8 +3,18 @@
         <div class="card-body gap-4">
             <h1 class="card-title mb-2">Workshop bearbeiten</h1>
 
+            {{--            @if ($errors->any())--}}
+            {{--                <div class="alert alert-error mb-4">--}}
+            {{--                    <ul>--}}
+            {{--                        @foreach ($errors->all() as $error)--}}
+            {{--                            <li>{{ $error }}</li>--}}
+            {{--                        @endforeach--}}
+            {{--                    </ul>--}}
+            {{--                </div>--}}
+            {{--            @endif--}}
+
             <form id="update-form" method="POST" action="{{ route('workshops.update', $workshop->id) }}"
-                  class="flex flex-col gap-4">
+                  enctype="multipart/form-data" class="flex flex-col gap-4">
                 @csrf
                 @method('PUT')
 
@@ -42,24 +52,15 @@
                     </select>
                     @error('organizer_id') <span class="text-error text-sm">{{ $message }}</span> @enderror
                 </label>
-            </form>
 
-            {{-- Bild ändern: eigenes Formular wegen Datei-Upload --}}
-            <form id="image-form" method="POST" action="{{ route('workshops.image', $workshop->id) }}"
-                  enctype="multipart/form-data">
-                @csrf
-                @method('PATCH')
                 <label class="form-control">
-                    <span class="label-text font-medium">Neues Bild:</span>
+                    <span class="label-text font-medium">Bild:</span>
                     <input type="file" name="image" class="file-input file-input-bordered w-full">
                 </label>
-            </form>
 
-            <div class="flex justify-between mt-2">
-                <button type="submit" form="update-form" class="btn btn-primary hover:brightness-110">
-                    Aktualisieren
+                <button type="submit" form="update-form" class="btn btn-primary hover:brightness-110">Aktualisieren
                 </button>
-            </div>
+            </form>
         </div>
     </div>
 </x-layout>

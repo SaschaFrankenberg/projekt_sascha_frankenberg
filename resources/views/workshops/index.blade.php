@@ -7,7 +7,7 @@
                class="card bg-base-100 border border-base-300 shadow-sm overflow-hidden transition hover:shadow-md hover:border-primary">
                 <div class="aspect-video bg-base-300 flex items-center justify-center text-base-content/50">
                     @if ($workshop->image_path)
-                        <img src="{{ asset('storage/'.$workshop->image_path) }}" alt="{{ $workshop->name }}"
+                        <img src="{{ asset('storage/'.$workshop->image_path) }}" alt="{{ $workshop->image_alt }}"
                              class="w-full h-full object-cover">
                     @else
                         Kein Bild
@@ -15,6 +15,7 @@
                 </div>
                 <div class="card-body p-4 items-center text-center">
                     <h2 class="card-title text-base">{{ $workshop->name }}</h2>
+                    <p class="text-sm text-base-content/70">{{ $workshop->members_count }} Teilnehmer</p>
                 </div>
             </a>
         @endforeach

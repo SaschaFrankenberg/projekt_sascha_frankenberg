@@ -26,9 +26,9 @@ class StoreWorkshopRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
-            'organizer_id' => ['required', 'exists:organizers,id'],
-            'image_path' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
-            'image_alt' => ['required', 'string', 'max:255'],
+            'organizer_id' => ['required', 'exists:users,id'],
+            'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
+            'image_alt' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

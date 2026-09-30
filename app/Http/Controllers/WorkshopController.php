@@ -6,7 +6,8 @@ use App\Http\Requests\Workshop\StoreWorkshopRequest;
 use App\Http\Requests\Workshop\UpdateWorkshopRequest;
 use App\Models\User;
 use App\Models\Workshop;
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class WorkshopController extends Controller
@@ -16,7 +17,7 @@ class WorkshopController extends Controller
      */
     public function index()
     {
-        $workshops = Workshop::with(['organizer', 'users'])->get();
+        $workshops = Workshop::withCount(['members'])->get();
 
         return view('workshops.index', compact('workshops'));
     }
@@ -26,8 +27,9 @@ class WorkshopController extends Controller
      */
     public function create()
     {
-        Gate::authorize('is-Organizer');
-//        $organizer = User::where('role', 'organizer')->get();
+        Gate::authorize('is-organizer');
+
+        $organizer = User::where('role', 'organizer')->get();
         return view('workshops.create', compact('organizer'));
     }
 
@@ -48,7 +50,7 @@ class WorkshopController extends Controller
      */
     public function show(Workshop $workshop)
     {
-        $workshop->load(['organizer', 'users']);
+        $workshop->loadCount(['members']);
         $isRegistered = auth()->check() && $workshop->users()->where('user_id', auth()->id())->exists();
 
         return view('workshops.show', compact('workshop', 'isRegistered'));
@@ -73,7 +75,8 @@ class WorkshopController extends Controller
      */
     public function edit(Workshop $workshop)
     {
-//        Gate::authorize('is-Organizer');
+        Gate::authorize('is-organizer');
+
         $organizers = User::where('role', 'organizer')->get();
         return view('workshops.edit', compact('workshop', 'organizers'));
     }
@@ -83,11 +86,23 @@ class WorkshopController extends Controller
      */
     public function update(UpdateWorkshopRequest $request, Workshop $workshop)
     {
-//        Gate::authorize('is-Organizer');
-        $workshop->update($request->validated());
+        Gate::authorize('is-organizer');
+
+        $data = $request->validated();
+//        dd($request->hasFile('image'), $request->file('image'), $request->allFiles());
+        if ($request->hasFile('image')) {
+            if ($workshop->image_path) {
+                Storage::disk('public')->delete($workshop->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('images/workshops', 'public');
+        }
+
+        unset($data['image']);
+
+        $workshop->update($data);
 
         return redirect()
-            ->route('workshops.show', $workshop)
+            ->route('workshops.index', $workshop)
             ->with('success', 'Workshop updated successfully.');
     }
 
@@ -96,7 +111,8 @@ class WorkshopController extends Controller
      */
     public function destroy(Workshop $workshop)
     {
-//        Gate::authorize('is-Organizer');
+        Gate::authorize('is-organizer');
+
         $workshop->delete();
         return redirect()->route('dashboard')->with('success', 'Workshop deleted successfully.');
     }

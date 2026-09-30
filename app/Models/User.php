@@ -32,6 +32,6 @@ class User extends Authenticatable
     }
 
     public function workshops() {
-        return $this->belongsToMany(Workshop::class);
+        return $this->belongsToMany(Workshop::class, 'user_workshop');
     }
 }

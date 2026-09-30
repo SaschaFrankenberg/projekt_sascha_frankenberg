@@ -1,7 +1,7 @@
 <x-layout title="Dashboard">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold">Dashboard</h1>
-        @can('is-Organizer')
+        @can('is-organizer')
             <a href="{{ route('workshops.create') }}" class="btn btn-primary hover:brightness-110">
                 + Neuen Kurs anlegen
             </a>
@@ -19,13 +19,15 @@
                            class="btn btn-outline btn-primary btn-sm hover:bg-primary hover:text-primary-content">
                             {{ $workshop->name }}
                         </a>
-                        <p class="mt-3 text-sm font-medium">Programmführer: {{ $workshop->organizer->name}}</p>
+                        <p class="mt-3 text-sm font-medium">
+                            Programmführer: {{ $workshop->leader }} · {{ $workshop->members_count }} Teilnehmer
+                        </p>
                     </div>
 
                     <form method="POST" action="{{ route('workshops.destroy', $workshop->id) }}">
                         @csrf
                         @method('DELETE')
-                        @can('is-Organizer')
+                        @can('is-organizer')
                             <button type="submit"
                                     class="btn btn-outline btn-error btn-sm hover:bg-error hover:text-error-content">
                                 Löschen

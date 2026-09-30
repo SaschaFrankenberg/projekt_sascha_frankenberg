@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('is-Organizer', function (User $user) {
-            return $user->role == 'organizer' ? Response::allow() : Response::deny('You are not an organizer');
+        Gate::define('is-organizer', function (User $user) {
+            return $user->role === 'organizer' ? Response::allow() : Response::deny('You are not an organizer');
         });
     }
 }

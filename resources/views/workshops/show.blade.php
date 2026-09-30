@@ -19,8 +19,12 @@
                 <dt class="font-medium text-base-content/70">Datum:</dt>
                 <dd class="col-span-2">{{ $workshop->date }}</dd>
 
+                <dt class="font-medium text-base-content/70">Teilnehmer:</dt>
+                <dd class="col-span-2">{{ $workshop->members_count }}</dd>
+
                 <dt class="font-medium text-base-content/70">Programmführer:</dt>
                 <dd class="col-span-2">{{ $workshop->organizer->name}}</dd>
+
             </dl>
 
             <div class="flex justify-end mt-8">

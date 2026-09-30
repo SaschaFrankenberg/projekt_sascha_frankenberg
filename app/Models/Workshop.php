@@ -28,7 +28,8 @@ class Workshop extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function participants() {
-        return $this->users();
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'user_workshop');
     }
 }

@@ -10,7 +10,10 @@
 </head>
 <body class="min-h-screen flex flex-col bg-base-200 text-base-content">
 
-{{-- Logo-Banner über die volle Browserbreite --}}
+@if (session('success'))
+    <div class="alert alert-success mb-4"><span>{{ session('success') }}</span></div>
+@endif
+
 <a href="{{ route('welcome') }}" class="block w-full h-40 md:h-56 bg-neutral overflow-hidden">
     <img src="{{ asset('images/generated-image.png') }}" alt="Vereinslogo" class="w-full h-full object-cover">
 </a>
