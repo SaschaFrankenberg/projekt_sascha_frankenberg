@@ -54,6 +54,7 @@ class WorkshopController extends Controller
     public function show(Workshop $workshop)
     {
         $workshop->loadCount(['members']);
+        // Checkt ob der Nutzer für den Workshop registriert ist
         $isRegistered = auth()->check() && $workshop->users()->where('user_id', auth()->id())->exists();
 
         return view('workshops.show', compact('workshop', 'isRegistered'));
@@ -96,9 +97,10 @@ class WorkshopController extends Controller
         Gate::authorize('is-organizer');
 
         $data = $request->validated();
-//        dd($request->hasFile('image'), $request->file('image'), $request->allFiles());
+//        dd($request->hasFile('image');
         if ($request->hasFile('image')) {
             if ($workshop->image_path) {
+                // Wählt den Speicherort aus und löscht das alte Bild
                 Storage::disk('public')->delete($workshop->image_path);
             }
             $data['image_path'] = $request->file('image')->store('images/workshops', 'public');

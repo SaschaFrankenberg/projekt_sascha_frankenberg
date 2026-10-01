@@ -1,5 +1,31 @@
 @import 'tailwindcss';
-@plugin "daisyui";
+@plugin "daisyui" {
+    themes: observatory --default;
+}
+
+@plugin "daisyui/theme" {
+    name: "observatory";
+    default: true;
+    color-scheme: dark;
+    --color-base-100: #0f1222;
+    --color-base-200: #0a0c1a;
+    --color-base-300: #050611;
+    --color-base-content: #e8e9f3;
+    --color-primary: #f0b429;
+    --color-primary-content: #1a1300;
+    --color-secondary: #7c6fd4;
+    --color-secondary-content: #ffffff;
+    --color-accent: #f0b429;
+    --color-accent-content: #1a1300;
+    --color-neutral: #1c2038;
+    --color-neutral-content: #e8e9f3;
+    --color-info: #5db3f0;
+    --color-success: #4ade80;
+    --color-warning: #f0b429;
+    --color-error: #f87171;
+    --radius-box: 1rem;
+    --radius-field: 0.5rem;
+}
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

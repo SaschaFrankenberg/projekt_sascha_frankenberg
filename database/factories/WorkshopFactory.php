@@ -18,6 +18,7 @@ class WorkshopFactory extends Factory
      */
     public function definition(): array
     {
+        // Vorlagen für die Factory, um zufällig Workshops zu erstellen
         $templates = [
             [
                 'name' => 'Einführung in die Astronomie',

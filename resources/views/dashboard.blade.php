@@ -10,9 +10,7 @@
 
     <div class="flex flex-col gap-4">
         @foreach ($workshops as $workshop)
-            <div class="card border border-base-300 shadow-sm overflow-hidden">
-
-                {{-- Kursbild als Hintergrund, klickbar zur Show-Seite --}}
+            <div class="card border border-base-300 shadow-lg overflow-hidden">
                 <a href="{{ route('workshops.show', $workshop->id) }}"
                    class="block bg-base-300 bg-cover bg-center"
                    @if ($workshop->image_path)
@@ -28,21 +26,18 @@
                 @can('is-organizer')
                     <div class="flex justify-end gap-2 p-3 border-t border-base-300">
                         <a href="{{ route('workshops.edit', $workshop->id) }}"
-                           class="btn btn-outline btn-sm hover:bg-base-200">
+                           class="btn btn-outline btn-sm hover:bg-base-300">
                             Bearbeiten
                         </a>
-
                         <form method="POST" action="{{ route('workshops.destroy', $workshop->id) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit"
-                                    class="btn btn-outline btn-error btn-sm hover:bg-error hover:text-error-content">
+                            <button type="submit" class="btn btn-outline btn-error btn-sm hover:bg-error hover:text-error-content">
                                 Löschen
                             </button>
                         </form>
                     </div>
                 @endcan
-
             </div>
         @endforeach
     </div>
