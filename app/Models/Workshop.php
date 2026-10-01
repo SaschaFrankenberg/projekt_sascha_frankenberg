@@ -13,10 +13,19 @@ class Workshop extends Model
         'name',
         'description',
         'date',
+        'time',
+        'location',
         'organizer_id',
         'image_path',
         'image_alt',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'date' => 'date',
+        ];
+    }
 
     public function organizer()
     {

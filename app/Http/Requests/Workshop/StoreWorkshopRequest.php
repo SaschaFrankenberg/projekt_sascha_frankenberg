@@ -23,12 +23,14 @@ class StoreWorkshopRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
-            'date' => ['required', 'date'],
+            'name'         => ['required', 'string', 'max:255'],
+            'description'  => ['required', 'string', 'max:500'],
+            'date'         => ['required', 'date'],
+            'time'         => ['required', 'date_format:H:i'],
+            'location'     => ['required', 'string', 'max:255'],
             'organizer_id' => ['required', 'exists:users,id'],
-            'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
-            'image_alt' => ['nullable', 'string', 'max:255'],
+            'image'        => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
+            'image_alt'    => ['nullable', 'string', 'max:255'],
         ];
     }
 }

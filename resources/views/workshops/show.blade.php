@@ -1,30 +1,33 @@
 <x-layout :title="$workshop->title">
     <div class="card bg-base-100 border border-base-300 shadow-sm max-w-2xl mx-auto">
         <div class="card-body">
-
-            <div class="flex justify-end">
-                <a href="{{ route('workshops.edit', $workshop->id) }}"
-                   class="btn btn-outline btn-sm hover:bg-base-200">
-                    Bearbeiten
-                </a>
-            </div>
+{{--            <div class="flex justify-end">--}}
+{{--                <a href="{{ route('workshops.edit', $workshop->id) }}"--}}
+{{--                   class="btn btn-outline btn-sm hover:bg-base-200">--}}
+{{--                    Bearbeiten--}}
+{{--                </a>--}}
+{{--            </div>--}}
 
             <h1 class="text-3xl font-bold mb-6">{{ $workshop->name }}</h1>
 
             <dl class="grid grid-cols-3 gap-y-4 gap-x-4">
-
                 <dt class="font-medium text-base-content/70">Beschreibung:</dt>
                 <dd class="col-span-2">{{ $workshop->description }}</dd>
 
                 <dt class="font-medium text-base-content/70">Datum:</dt>
-                <dd class="col-span-2">{{ $workshop->date }}</dd>
+                <dd class="col-span-2">{{ $workshop->date->format('d.m.Y') }}</dd>
+
+                <dt class="font-medium text-base-content/70">Uhrzeit:</dt>
+                <dd class="col-span-2">{{ $workshop->time }}</dd>
+
+                <dt class="font-medium text-base-content/70">Ort:</dt>
+                <dd class="col-span-2">{{ $workshop->location }}</dd>
 
                 <dt class="font-medium text-base-content/70">Teilnehmer:</dt>
                 <dd class="col-span-2">{{ $workshop->members_count }}</dd>
 
                 <dt class="font-medium text-base-content/70">Programmführer:</dt>
                 <dd class="col-span-2">{{ $workshop->organizer->name}}</dd>
-
             </dl>
 
             <div class="flex justify-end mt-8">

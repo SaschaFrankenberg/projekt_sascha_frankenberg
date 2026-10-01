@@ -28,16 +28,33 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M3 8l9 6 9-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
                         </svg>
-                        <span class="badge badge-primary badge-xs indicator-item">2</span>
+                        @if (auth()->user()->unreadNotifications->count() > 0)
+                            <span class="badge badge-primary badge-xs indicator-item">
+                                 {{ auth()->user()->unreadNotifications->count() }}
+                            </span>
+                        @endif
                     </div>
                 </div>
 
-                <ul tabindex="0"
-                    class="menu menu-sm dropdown-content bg-base-100 rounded-box border border-base-300 z-10 mt-3 w-72 p-2 shadow-lg">
-                    <li class="menu-title">Nachrichten</li>
-                    <li><a class="hover:bg-base-200">Neue Anmeldung zu Workshop 1</a></li>
-                    <li><a class="hover:bg-base-200">Workshop 2 wurde verschoben</a></li>
-                </ul>
+                <div tabindex="0"
+                     class="dropdown-content bg-base-100 rounded-box border border-base-300 z-10 mt-3 w-72 shadow-lg">
+                    <ul class="menu menu-sm p-2">
+                        <li class="menu-title">Nachrichten</li>
+                        @forelse (auth()->user()->unreadNotifications as $notification)
+                            <li><a class="hover:bg-base-200">{{ $notification->data['message'] }}</a></li>
+                        @empty
+                            <li class="disabled"><a>Keine neuen Nachrichten</a></li>
+                        @endforelse
+                    </ul>
+
+                    @if (auth()->user()->unreadNotifications->count() > 0)
+                        <form method="POST" action="{{ route('notifications.read') }}"
+                              class="p-2 border-t border-base-300">
+                            @csrf
+                            <button type="submit" class="btn btn-ghost btn-xs w-full">Als gelesen markieren</button>
+                        </form>
+                    @endif
+                </div>
             </div>
 
             {{-- Name --}}
@@ -51,7 +68,7 @@
                     <li>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full text-left hover:bg-base-200 rounded-md px-3 py-2">
+                            <button type="submit" class="w-full text-center hover:bg-base-200 rounded-md px-3 py-2">
                                 Logout
                             </button>
                         </form>

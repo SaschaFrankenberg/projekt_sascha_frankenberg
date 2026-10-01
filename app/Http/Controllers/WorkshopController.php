@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Workshop\StoreWorkshopRequest;
 use App\Http\Requests\Workshop\UpdateWorkshopRequest;
+use App\Notifications\SubscribeWorkshop;
+use App\Notifications\UnsubscribeWorkshop;
+use App\Notifications\UpdateWorkshop;
 use App\Models\User;
 use App\Models\Workshop;
 use Illuminate\Support\Facades\Storage;
@@ -60,12 +63,16 @@ class WorkshopController extends Controller
     {
         $workshop->users()->syncWithoutDetaching(auth()->id());
 
+        $workshop->organizer->notify(new SubscribeWorkshop($workshop, auth()->user()));
+
         return redirect()->back()->with('success', 'Workshop registered successfully.');
     }
 
     public function unregister(Workshop $workshop)
     {
         $workshop->users()->detach(auth()->id());
+
+        $workshop->organizer->notify(new UnsubscribeWorkshop($workshop, auth()->user()));
 
         return redirect()->back()->with('success', 'Workshop unregistered successfully.');
     }
@@ -100,6 +107,10 @@ class WorkshopController extends Controller
         unset($data['image']);
 
         $workshop->update($data);
+
+        foreach ($workshop->members as $member) {
+            $member->notify(new UpdateWorkshop($workshop));
+        }
 
         return redirect()
             ->route('workshops.index', $workshop)

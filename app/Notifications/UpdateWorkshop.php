@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Workshop;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,10 +15,9 @@ class UpdateWorkshop extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        public Workshop $workshop,
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -26,7 +26,7 @@ class UpdateWorkshop extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -35,9 +35,10 @@ class UpdateWorkshop extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject('Workshop aktualisiert: ' . $this->workshop->name)
+            ->greeting('Hallo ' . $notifiable->name . ',')
+            ->line('Der Workshop „' . $this->workshop->name . '“, bei dem du angemeldet bist, wurde aktualisiert.')
+            ->action('Änderungen ansehen', route('workshops.show', $this->workshop));
     }
 
     /**
@@ -48,7 +49,8 @@ class UpdateWorkshop extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'message'     => 'Der Workshop „' . $this->workshop->name . '“ wurde aktualisiert.',
+            'workshop_id' => $this->workshop->id,
         ];
     }
 }

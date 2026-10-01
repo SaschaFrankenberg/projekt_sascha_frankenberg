@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
+use App\Models\Workshop;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,10 +16,10 @@ class UnsubscribeWorkshop extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        public Workshop $workshop,
+        public User     $user,
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -26,7 +28,7 @@ class UnsubscribeWorkshop extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -35,9 +37,10 @@ class UnsubscribeWorkshop extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject('Abmeldung von ' . $this->workshop->name)
+            ->greeting('Hallo ' . $notifiable->name . ',')
+            ->line($this->user->name . ' hat sich von „' . $this->workshop->name . '“ abgemeldet.')
+            ->action('Workshop ansehen', route('workshops.show', $this->workshop));
     }
 
     /**
@@ -48,7 +51,8 @@ class UnsubscribeWorkshop extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'message' => $this->user->name . ' hat sich von „' . $this->workshop->name . '“ abgemeldet.',
+            'workshop_id' => $this->workshop->id,
         ];
     }
 }

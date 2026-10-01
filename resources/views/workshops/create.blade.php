@@ -22,6 +22,20 @@
             @error('date') {{ $message }} @enderror
 
             <label class="form-control"></label>
+            <span class="label-text font-medium">Uhrzeit:</span>
+            <input type="time" name="time" value="{{ old('time', $workshop->time ?? '') }}"
+                   class="input input-bordered w-full">
+            @error('time') <span class="text-error text-sm">{{ $message }}</span> @enderror
+
+
+            <label class="form-control"></label>
+            <span class="label-text font-medium">Ort:</span>
+            <input type="text" name="location" value="{{ old('location', $workshop->location ?? '') }}"
+                   class="input input-bordered w-full">
+            @error('location') <span class="text-error text-sm">{{ $message }}</span> @enderror
+
+
+            <label class="form-control"></label>
             <span class="label-text font-medium">Programmführer:</span>
             <select name="organizer_id" id="organizer_id" class="input input-bordered w-full">
                 <option value="">-- Bitte Organizer wählen --</option>
