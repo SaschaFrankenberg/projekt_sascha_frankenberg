@@ -34,6 +34,7 @@ class Workshop extends Model
 
     public function users()
     {
+        // Nicht sicher, ob ich es überhaupt brauche
         return $this->belongsToMany(User::class);
     }
 
