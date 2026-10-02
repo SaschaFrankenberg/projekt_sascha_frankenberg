@@ -33,6 +33,7 @@ class WorkshopController extends Controller
         Gate::authorize('is-organizer');
 
         $organizer = User::where('role', 'organizer')->get();
+
         return view('workshops.create', compact('organizer'));
     }
 
@@ -54,6 +55,7 @@ class WorkshopController extends Controller
     public function show(Workshop $workshop)
     {
         $workshop->loadCount(['members']);
+
         // Checkt ob der Nutzer für den Workshop registriert ist
         $isRegistered = auth()->check() && $workshop->users()->where('user_id', auth()->id())->exists();
 
@@ -62,10 +64,13 @@ class WorkshopController extends Controller
 
     public function register(Workshop $workshop)
     {
+        // Id bleibt bestehen
         $workshop->users()->syncWithoutDetaching(auth()->id());
 
+        // Nur die Organisatoren bekommen die Nachricht bei Anmeldung eines Mitgliedes
         $workshop->organizer->notify(new SubscribeWorkshop($workshop, auth()->user()));
 
+        // Wird auf die selbe Seite zurückgeschickt
         return redirect()->back()->with('success', 'Workshop registered successfully.');
     }
 
@@ -73,8 +78,10 @@ class WorkshopController extends Controller
     {
         $workshop->users()->detach(auth()->id());
 
+        // Nur die Organisatoren bekommen die Nachricht bei Abmeldung eines Mitgliedes
         $workshop->organizer->notify(new UnsubscribeWorkshop($workshop, auth()->user()));
 
+        // Wird auf die selbe Seite zurückgeschickt
         return redirect()->back()->with('success', 'Workshop unregistered successfully.');
     }
 
@@ -85,7 +92,9 @@ class WorkshopController extends Controller
     {
         Gate::authorize('is-organizer');
 
+        // Wer darf bearbeiten
         $organizers = User::where('role', 'organizer')->get();
+
         return view('workshops.edit', compact('workshop', 'organizers'));
     }
 
@@ -106,11 +115,13 @@ class WorkshopController extends Controller
             $data['image_path'] = $request->file('image')->store('images/workshops', 'public');
         }
 
+        // entfernt den Array-Eintrag mit dem Schlüssel image aus $data
         unset($data['image']);
 
         $workshop->update($data);
 
-        foreach ($workshop->members as $member) {
+        foreach ($workshop->members as $member)
+        {
             $member->notify(new UpdateWorkshop($workshop));
         }
 
@@ -127,6 +138,7 @@ class WorkshopController extends Controller
         Gate::authorize('is-organizer');
 
         $workshop->delete();
+
         return redirect()->route('dashboard')->with('success', 'Workshop deleted successfully.');
     }
 }
